@@ -1,9 +1,10 @@
 import {NextResponse} from 'next/server';
-import axios from 'axios';
 import wooCommerce from '@woocommerce/woocommerce-rest-api'
 
 export const POST = async (req,res)=>{
     const payload = await req.json()
+const date = payload.data;
+
 
     const WooCommerce =  new wooCommerce({
   url: payload.url, // Your store URL
@@ -13,10 +14,10 @@ export const POST = async (req,res)=>{
 });
 
     try {
-       const response = await WooCommerce.get('orders')
-       return NextResponse.json(response.data)
+       const response = await WooCommerce.get('orders', date)
+       return NextResponse.json({message:'pass',data:response.data})
     } catch (error) {
-        return NextResponse.json(error)
+        return NextResponse.json({message:'failed',data: error})
     }
 
 }
